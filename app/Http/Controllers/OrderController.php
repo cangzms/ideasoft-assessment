@@ -14,8 +14,7 @@ class OrderController extends Controller
     {
         $orders = Order::select('id', 'customerId', 'items', 'total')->get();
 
-        if ($orders->isEmpty())
-        {
+        if ($orders->isEmpty()) {
             return response()->json([
                 'Error' => 'Order Not Found'
             ]);
@@ -28,8 +27,8 @@ class OrderController extends Controller
     public function create(OrderRequest $request)
     {
         $customer = Customer::find($request->customerId);
-        if (!$customer){
-            return response()->json(['Error' => 'Customer not found'],404); // Customer kontrolü
+        if (!$customer) {
+            return response()->json(['Error' => 'Customer not found'], 404); // Customer kontrolü
         };
 
         $items = $request->items;
@@ -37,14 +36,14 @@ class OrderController extends Controller
 
         foreach ($items as $item) {
             $product = Product::find($item['productId']);
-            if (!$product || $product->stock < $item['quantity']){  // Product ve stok kontrolü
+            if (!$product || $product->stock < $item['quantity']) {  // Product ve stok kontrolü
                 return response()->json([
                     'Error' => 'Stock is not enough',
                     'Product' => $product->name,
                     'Current Stock' => $product->stock], 404);
             }
 
-            $total += (float) $item['total']; // Ürünlerin toplam fiyatlarının genel toplama atanması
+            $total += (float)$item['total']; // Ürünlerin toplam fiyatlarının genel toplama atanması
 
             $product_stock = $product->stock - $item['quantity']; // stok sayılarının düşülmesi
 
@@ -61,7 +60,7 @@ class OrderController extends Controller
             'total' => $total
         ]);
 
-        return response()->json(['message' => 'Order created successfully.'],201);
+        return response()->json(['message' => 'Order created successfully.'], 201);
 
     }
 
@@ -69,13 +68,13 @@ class OrderController extends Controller
     {
         $order = Order::find($id);
 
-        if (!$order){
-            return response()->json(['message' => 'Order not found.'],404);
+        if (!$order) {
+            return response()->json(['message' => 'Order not found.'], 404);
         }
 
         $order->delete();
 
-        return response()->json(['message' => 'Order deleted successfully.'],201);
+        return response()->json(['message' => 'Order deleted successfully.'], 201);
 
     }
 }

@@ -24,4 +24,4 @@ Route::get('/orders/list', [OrderController::class, 'list']);
 Route::post('/orders/create', [OrderController::class, 'create']);
 Route::delete('/orders/{id}', [OrderController::class, 'destroy']);
 
-Route::post('/discount/{orderId}',[DiscountController::class, 'discount']);
+Route::post('/discount/{orderId}', [DiscountController::class, 'discount']);
